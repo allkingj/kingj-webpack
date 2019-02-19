@@ -1,7 +1,6 @@
 /**
  * Created by kingj on 2019/2/14
  */
-
 // 严格模式
 'use strict'
 
@@ -15,7 +14,6 @@ const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
 const webpackConfig = require('./webpack.prod.conf')
-
 
 const spinner = ora('building for production...')
 spinner.start()

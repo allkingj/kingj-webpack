@@ -1,109 +1,56 @@
 /**
  * Created by kingj on 2019/2/15
  */
-
 // 严格模式
 'use strict'
-
 // 必要引用
 const path = require('path')
-const webpack = require('webpack')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const merge = require('webpack-merge')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const AutoDllPlugin = require('autodll-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 const utils = require('./utils')
+const config = require('../config/index.js')
 const baseWebpackConfig = require('./webpack.base.conf')
 
 const prodConfig = {
-
   mode: 'production',
-
+  output: {
+    path: utils.resolve(config.base.outputPath),
+    filename: utils.pathPosix(config.base.assetsPaht, 'js/[name].[hash].js'),
+    chunkFilename: utils.pathPosix(config.base.assetsPaht, 'js/[name].[hash].js'),
+    publicPath: '/'
+  },
   // 模块
   module: {
-    rules: utils.cssRules(['css']),
+    rules: utils.cssRules(['css'])
   },
-
-  optimization: {
-    splitChunks: {
-      chunks: "async",
-      minSize: 30000,
-      minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
-      name: true,
-      cacheGroups: {
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
-        }
-      }
-    },
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true, // 平行压缩
-        sourceMap: false, // set to true if you want JS source maps
-        uglifyOptions: {
-          compress: {
-            warnings: false,
-            drop_debugger: true,
-            drop_console: false
-          }
-        }
-      }),
-
-      // 将一些不太可能改动的第三方库单独打包，会通过缓存极大提升打包速度
-      new AutoDllPlugin({
-        // will inject the DLL bundle to index.html
-        // default false
-        inject: true,
-        debug: false,
-        filename: '[name]_[hash].js',
-        path: 'static/js',
-        entry: {
-          // [name] = vue, 在这里会将entry里的每个item(vue,jquery)都打包成一个js
-          vue: [
-            'vue',
-            // 'vue-router'
-          ],
-        }
-      }),
-
-      // 全局引入对象
-      new webpack.ProvidePlugin({
-        // $: 'jquery'
-      }),
-
-      new OptimizeCSSAssetsPlugin({})
-    ]
-  },
-
+  optimization: config.prod.optimization,
   // source map
-  devtool: false,
-
+  devtool: config.prod.useDevtool,
   plugins: [
-
     // css 提取
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[hash].css',
       chunkFilename: 'static/css/[name].[hash].css'
     }),
-
-    // 清除文件
-    new CleanWebpackPlugin(['dist/'], {
-      root: path.resolve(__dirname, '../')
-    })
+    // 复制文件到目标文件夹。在开发时使用热模替换，（没有生成dist 文件夹，都在内存中），
+    // 如果想引用某一个js文件，直接写script标签是找不到的，因为服务器内存中没有这个文件。
+    // 所以复制这个文件，到dist中。
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../lib'),
+        to: config.prod.assetsPublicPath,
+        ignore: ['.*']
+      }
+    ])
+    // 清除文件 暂不使用该插件
+    // new CleanWebpackPlugin(['dist/'], {
+    //   root: path.resolve(__dirname, '../')
+    // })
   ]
 }
 
-const prodWebpackConfig = merge(baseWebpackConfig,prodConfig)
+const prodWebpackConfig = merge(baseWebpackConfig, prodConfig)
 
 module.exports = prodWebpackConfig

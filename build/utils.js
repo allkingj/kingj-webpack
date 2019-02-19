@@ -1,13 +1,13 @@
 /**
  * Created by kingj on 2019/2/15
  */
-
 // 严格模式
 'use strict'
 
 // 必要引用
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 const packageConfig = require('../package.json')
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -20,7 +20,7 @@ const commonLoader = [
     options: {
 
       // source map
-      sourceMap: isProduction,
+      sourceMap: isProduction
       // 开启 CSS Modules
       // modules: true,
       // 自定义生成的类名
@@ -31,11 +31,11 @@ const commonLoader = [
 ]
 
 const cssLoaders = {
-  css:{
+  css: {
     test: /\.css$/,
     use: commonLoader
   },
-  less:{
+  less: {
     test: /\.less$/,
     use: commonLoader.concat({
       loader: 'less-loader',
@@ -53,7 +53,7 @@ const cssLoaders = {
       loader: 'sass-loader',
       options: {
         // 使用基于缩进的 sass 语法
-        indentedSyntax: true,
+        indentedSyntax: true
         // 开启 sass Modules
         // modules: true,
         // 自定义生成的类名
@@ -61,7 +61,7 @@ const cssLoaders = {
       }
     })
   },
-  stylus:{
+  stylus: {
     test: /\.styl(us)?$/,
     use: commonLoader.concat({
       loader: 'stylus-loader',
@@ -78,7 +78,7 @@ const cssLoaders = {
 // cssRules
 exports.cssRules = function (options) {
   const output = []
-  options.forEach((v)=>{
+  options.forEach((v) => {
     output.push(cssLoaders[v])
   })
   return output
@@ -100,4 +100,12 @@ exports.createNotifierCallback = () => {
       icon: path.join(__dirname, 'logo.png')
     })
   }
+}
+
+exports.resolve = (dir) => {
+  return path.join(__dirname, '..', dir)
+}
+
+exports.pathPosix = (assetsPaht, name) => {
+  return path.posix.join(assetsPaht, name)
 }

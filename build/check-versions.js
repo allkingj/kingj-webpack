@@ -1,10 +1,10 @@
 /**
  * Created by kingj on 2019/2/17
  */
-
 // 严格模式
 'use strict'
 
+// 必要引用
 const chalk = require('chalk')
 const semver = require('semver')
 const packageConfig = require('../package.json')
@@ -14,6 +14,7 @@ function exec (cmd) {
   return require('child_process').execSync(cmd).toString().trim()
 }
 
+// node 版本
 const versionRequirements = [
   {
     name: 'node',
@@ -22,6 +23,7 @@ const versionRequirements = [
   }
 ]
 
+// npm 版本
 if (shell.which('npm')) {
   versionRequirements.push({
     name: 'npm',
