@@ -20,7 +20,7 @@ const devConfig = {
   mode: 'development',
   // 模块
   module: {
-    rules: utils.cssRules(['css'])
+    rules: utils.cssRules(['css', 'less'])
   },
   optimization: {
     runtimeChunk: false,

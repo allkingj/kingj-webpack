@@ -23,7 +23,7 @@ const prodConfig = {
   },
   // 模块
   module: {
-    rules: utils.cssRules(['css'])
+    rules: utils.cssRules(['css', 'less'])
   },
   optimization: config.prod.optimization,
   // source map
@@ -39,7 +39,7 @@ const prodConfig = {
     // 所以复制这个文件，到dist中。
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../lib'),
+        from: path.resolve(__dirname, '../static'),
         to: config.prod.assetsPublicPath,
         ignore: ['.*']
       }

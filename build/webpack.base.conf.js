@@ -16,6 +16,9 @@ const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 const config = require('../config/index.js')
 const utils = require('./utils.js')
 const vueLoaderConfig = require('./vue-loader.conf.js')
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
@@ -52,17 +55,17 @@ module.exports = {
       // vue
       {
         test: /\.vue$/,
-        include: [utils.resolve('src')],
-        exclude: [utils.resolve('node_modules')],
+        include: [resolve('src')],
+        exclude: [resolve('node_modules')],
         loader: 'vue-loader',
         options: vueLoaderConfig
       },
       // js
       {
         test: /\.js$/,
-        include: [utils.resolve('src')],
-        exclude: [utils.resolve('node_modules')],
-        loader: 'happypack/loader?id=happyBabel'
+        include: [resolve('src')],
+        exclude: [resolve('node_modules')],
+        loader: 'happypack/loader?id=babel'
       },
       // pic
       {
@@ -118,7 +121,8 @@ module.exports = {
       {
         filename: 'index.html',
         template: './public/index.html',
-        favicon: './public/favicon.ico',
+        favicon: './public/favicon.png',
+        // inject: true,
         minify: config.base.minifyOptions
       }
     ),
@@ -130,12 +134,10 @@ module.exports = {
     ),
     new HappyPack({
       // 用id来标识 happypack 处理类文件
-      id: 'happyBabel',
+      id: 'babel',
       // 如何处理 用法和loader 的配置一样
       loaders: [
-        {
-          loader: 'babel-loader?cacheDirectory=true'
-        }
+        'babel-loader'
       ],
       // 共享进程池
       threadPool: happyThreadPool,
@@ -147,10 +149,8 @@ module.exports = {
       loaders: ['vue-loader']
     })
   ],
-
   // target
   target: 'web',
-
   // externals 暂不做处理
   // externals
 

@@ -1,28 +1,22 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js Apps"/>
+  <div class="pro-root">
+    <header class="pro-roo__header">头部组件</header>
+    <router-view></router-view>
+    <footer class="pro-roo__footer">底部组件</footer>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
   }
 }
 </script>
 
-<style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+<style lang="less" scoped>
+  .pro-root {
+    height: 100%;
   }
 </style>

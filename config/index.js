@@ -121,8 +121,8 @@ const configuration = {
           entry: {
             // [name] = vue, 在这里会将entry里的每个item(vue,jquery)都打包成一个js
             vue: [
-              'vue'
-              // 'vue-router'
+              'vue',
+              'vue-router'
             ]
           }
         }),

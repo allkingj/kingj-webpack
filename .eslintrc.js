@@ -3,7 +3,11 @@ module.exports = {
   parserOptions: {
     parser: require.resolve('babel-eslint'),
     ecmaVersion: 2018,
-    sourceType: 'module'
+    sourceType: 'module',
+    ecmaFeatures: {
+      'experimentalObjectRestSpread': true,
+      'jsx': true
+    },
   },
   env: {
     es6: true,
@@ -12,7 +16,9 @@ module.exports = {
   },
   plugins: [
     // "flowtype"    flow
-    'vue'
+    'vue' ,
+    "html",
+    "json"
   ],
   extends: [
     'plugin:vue/essential',
@@ -21,6 +27,8 @@ module.exports = {
   globals: {
     // "__WEEX__": true,
     // "WXEnvironment": true
+    "expect": true,
+    "sinon": true
   },
   rules: {
     // allow async-await

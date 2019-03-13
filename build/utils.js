@@ -41,7 +41,7 @@ const cssLoaders = {
       loader: 'less-loader',
       options: {
         // 开启 less Modules
-        // modules: true,
+        // modules: true
         // 自定义生成的类名
         // localIdentName: '[local]_[hash:base64:8]'
       }
